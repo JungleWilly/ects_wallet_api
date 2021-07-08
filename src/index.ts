@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
+import {passwordAuthChecker} from "./utils/auth-checker";
 
 const PORT = process.env.PORT || 4000;
 
@@ -12,7 +13,7 @@ const initialize = async () => {
         port: 3306,
         username: "root",
         password: "supersecret",
-        database: "test",
+        database: "ects_wallet",
         entities: [
             __dirname + "/entities/*.js"
         ],
@@ -21,11 +22,14 @@ const initialize = async () => {
 
     const schema = await buildSchema({
         resolvers: [__dirname + "/resolvers/*.{ts,js}"],
+        authChecker: passwordAuthChecker,
+        nullableByDefault: null,
     });
 
     const server = new ApolloServer({
         schema,
         playground: true,
+        context: ({ req, res }) => ({ req, res }),
     });
 
     const { url } = await server.listen(PORT);

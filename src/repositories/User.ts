@@ -18,9 +18,9 @@ export class UserRepository {
         return await this.repository.find();
     }
 
-    public static async getAllActiveUsers(): Promise<User[]> {
-        return await this.repository.find({ state: 'active' });
-    }
+    // public static async getAllActiveUsers(): Promise<User[]> {
+    //     return await this.repository.find({ state: 'active' });
+    // }
 
     public static async getUser(userId: number): Promise<User | null> {
         return await this.repository.findOne(userId);
