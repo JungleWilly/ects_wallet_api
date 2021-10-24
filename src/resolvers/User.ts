@@ -1,11 +1,11 @@
-import {Arg, Authorized, Ctx, Mutation, Query, Resolver} from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import * as bcrypt from 'bcrypt';
 import { UserController } from "../controllers/User";
 import { User } from "../entities/User";
 import { UserRepository } from "../repositories/User";
-import {getRepository} from "typeorm";
-import {AuthResult} from "../entities/AuthResult";
-import {generateJwt} from "../utils/helpers";
+import { getRepository } from "typeorm";
+import { AuthResult } from "../entities/AuthResult";
+import { generateJwt } from "../utils/helpers";
 
 @Resolver(User)
 export class UserResolver {
@@ -17,7 +17,7 @@ export class UserResolver {
     }
     @Query(returns => [User])
     async users() {
-        return UserRepository.getAllUsers();
+        return await UserRepository.getAllUsers();
     }
 
     @Mutation(() => User)
