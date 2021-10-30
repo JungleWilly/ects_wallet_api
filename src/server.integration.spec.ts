@@ -15,7 +15,7 @@ describe('Apollo server', () => {
             host: 'localhost',
             port: 3306,
             username: "user",
-            password: "password",
+            password: "secret",
             database: "test_db",
             dropSchema: true,
             logging: false,
