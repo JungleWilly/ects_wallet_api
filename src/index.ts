@@ -8,11 +8,11 @@ const initialize = async () => {
     await createConnection({
         name: "default",
         type: "mysql",
-        host: "mysql",
+        host: "us-cdbr-east-04.cleardb.com",
         port: 3306,
-        username: "root",
-        password: "supersecret",
-        database: "ects_wallet",
+        username: "bb2f6cf23ce242",
+        password: "19fe28b2",
+        database: "heroku_5805846cc6ee509",
         entities: [
             __dirname + "/entities/*.js"
         ],

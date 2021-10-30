@@ -2,7 +2,7 @@ services:
     app:
         build:
             context: .
-            target: serve
+            target: main
         ports:
             - 4000:4000
         volumes:
