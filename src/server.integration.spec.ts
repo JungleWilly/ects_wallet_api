@@ -55,6 +55,7 @@ describe('Apollo server', () => {
             });
 
             expect(await User.count()).toEqual(1);
+
             const user = await getRepository(User).findOne({ email: response.data.createUser.email })
             //console.log(await bcrypt.compare("Banane", response.data.createUser.password));
 
