@@ -25,6 +25,18 @@ jobs:
         - 33306:3306
       options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, build, and test
+        run: |
+          npm install
+          sudo service mysql start
+          npm test
+
 
   docker:
     runs-on: ubuntu-latest
