@@ -9,28 +9,41 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
-  services:
-    image: mysql
-    env:
-    - MYSQL_USER: mysql
-    - MYSQL_PASSWORD: mysql
-    - MYSQL_BD: mysql
-    ports:
-    - 4000:4000
-    options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-  
-  steps:
-    - 
-      name: Use Node.js v10
-      uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
-    - 
-      name: Install
-      run: npm install
-    - 
-      name: Test
-      run: npm test
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          - MYSQL_USER: mysql
+          - MYSQL_PASSWORD: mysql
+          - MYSQL_BD: mysql
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install, build, and test
+        run: |
+          cp ./config.json.example config.json
+          npm install
+          sudo service mysql start
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
+          #This command adds the proper mysql port to the config file
+          node scripts/ci ${{ job.services.mysql.ports['3306'] }}
+          npm run setup
+          npm test
+        env:
+          CI: true
+
 
   docker:
     runs-on: ubuntu-latest
