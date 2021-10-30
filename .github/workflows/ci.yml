@@ -43,6 +43,7 @@ jobs:
           npm test
 
   docker:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       -
