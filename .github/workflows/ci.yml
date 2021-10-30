@@ -14,16 +14,16 @@ jobs:
         node-version: [8.x, 10.x, 12.x]
 
     services:
-    mysql:
-      image: mysql:5.7
-      env:
-        MYSQL_DATABASE: test_db
-        MYSQL_USER: user
-        MYSQL_PASSWORD: password
-        MYSQL_ROOT_PASSWORD: rootpassword
-      ports:
-        - 33306:3306
-      options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v1
