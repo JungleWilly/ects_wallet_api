@@ -6,4 +6,5 @@ module.exports = {
       isolatedModules: true,
     },
   },
+  "testPathIgnorePatterns": ["<rootDir>/build/", "<rootDir>/node_modules/"]
 };

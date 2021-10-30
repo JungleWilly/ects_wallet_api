@@ -7,7 +7,7 @@
     "start": "docker-compose up --build",
     "test": "jest --watch",
     "build": "tsc",
-    "serve": "tsc-watch --onSuccess 'node ./build/index.js'"
+    "serve": "NODE_ENV=development tsc-watch --onSuccess 'node ./build/index.js'"
   },
   "keywords": [],
   "author": "",

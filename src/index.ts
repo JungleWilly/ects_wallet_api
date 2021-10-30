@@ -5,19 +5,38 @@ import { getApolloServer } from "./server";
 const PORT = process.env.PORT || 4000;
 
 const initialize = async () => {
-    await createConnection({
-        name: "default",
-        type: "mysql",
-        host: "us-cdbr-east-04.cleardb.com",
-        port: 3306,
-        username: "bb2f6cf23ce242",
-        password: "19fe28b2",
-        database: "heroku_5805846cc6ee509",
-        entities: [
-            __dirname + "/entities/*.js"
-        ],
-        synchronize: true,
-    });
+    if (process.env.NODE_ENV === 'development') {
+        await createConnection(
+            {
+                name: "default",
+                type: "mysql",
+                host: "mysql",
+                port: 3306,
+                username: "root",
+                password: "supersecret",
+                database: "ects_wallet",
+                entities: [
+                    __dirname + "/entities/*.js"
+                ],
+                synchronize: true,
+            });
+    } else {
+        await createConnection(
+            {
+                name: "default",
+                type: "mysql",
+                host: process.env.DB_HOST,
+                port: 3306,
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB,
+                entities: [
+                    __dirname + "/entities/*.js"
+                ],
+                synchronize: true,
+            });
+    }
+
 
     const server = await getApolloServer();
 

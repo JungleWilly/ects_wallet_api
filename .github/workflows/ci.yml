@@ -5,10 +5,32 @@ on:
     branches:
       - 'master'
 
-env:
-  TEST_TAG: ${{ secrets.DOCKERHUB_TAG }}:test
-
 jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+  services:
+    image: mysql
+    env:
+    - MYSQL_USER: mysql
+    - MYSQL_PASSWORD: mysql
+    - MYSQL_BD: mysql
+    ports:
+    - 4000:4000
+    options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+  
+  steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Use Node.js v10
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+    - name: Install
+      run: npm install
+    - name: Test
+      run: npm test
+
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -27,17 +49,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and export to Docker
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          load: true
-          tags: ${{ env.TEST_TAG }}
-      -
-        name: Test
-        run: |
-          docker run --rm ${{ env.TEST_TAG }}
       -
         name: Build and push
         uses: docker/build-push-action@v2
