@@ -36,30 +36,27 @@ describe('Apollo server', () => {
 
     describe('mutation createUser', () => {
         it('creates and returns a new user', async () => {
-            const manager = getConnection().manager;
-            const test = manager.connection.getRepository(User);
+            getConnection().manager.connection.getRepository(User);
 
             const response = await mutate({
                 mutation: `
-          mutation {
-            createUser(
-                email: "prune@hotmail.fr"
-                password: "Banane"
-            ) {
-                id
-                email
-                password
+            mutation {
+                createUser(
+                    email: "prune@hotmail.fr"
+                    password: "Banane"
+                ) {
+                    id
+                    email
+                    password
+                }
             }
-          }
-      `,
+        `,
             });
 
-            expect(await User.count()).toEqual(1);
-
-            const user = await getRepository(User).findOne({ email: response.data.createUser.email })
-            //console.log(await bcrypt.compare("Banane", response.data.createUser.password));
-
-
+            const user = await getRepository(User)
+                .findOne(
+                    { email: response.data.createUser.email }
+                )
 
             expect(response.data).toMatchObject({
                 createUser: {
@@ -72,7 +69,7 @@ describe('Apollo server', () => {
 
     describe('query users', () => {
         it('returns all users', async () => {
-            //const manager = getConnection().manager.getRepository(User);
+
             const user1 = User.create({
                 email: 'laure@pinson.fr',
                 password: 'Pinson',
@@ -86,14 +83,14 @@ describe('Apollo server', () => {
 
             const response = await query({
                 query: `
-            {
-              users {
-                id
-                email
-                password
-              }
-            }
-          `,
+                {
+                    users {
+                        id
+                        email
+                        password
+                    }
+                }
+            `,
             });
 
             expect(response.data).toEqual({
