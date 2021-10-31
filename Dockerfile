@@ -2,7 +2,7 @@ FROM node:alpine AS deps
 
 WORKDIR /app
 COPY package.json package.json
-CMD npm install
+RUN npm install
 
 FROM node:alpine AS serve
 
