@@ -31,11 +31,11 @@ const initialize = async () => {
             {
                 name: "default",
                 type: "mysql",
-                host: "locahost",
+                host: process.env.DB_HOST,
                 port: 3306,
-                username: "user",
-                password: "secret",
-                database: "ects_test",
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB,
                 entities: [
                     __dirname + "/entities/*.js"
                 ],
