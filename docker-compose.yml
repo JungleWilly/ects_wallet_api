@@ -4,7 +4,7 @@ services:
             context: .
             target: serve
         ports:
-            - 4000:4000
+            - ${APP_PORT}
         volumes:
             - ./src:/app/src
             - ./build:/app/build
@@ -14,11 +14,11 @@ services:
     mysql:
         image: mysql
         ports:
-            - 3307:3306
+            - ${DB_PORT}
         command: --default-authentication-plugin=mysql_native_password
         environment:
-            MYSQL_ROOT_PASSWORD: supersecret
-            MYSQL_DATABASE: ects_wallet
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
         volumes: 
             - /var/lib/mysql
         healthcheck:
